@@ -10,4 +10,15 @@ export class CoreHttpService {
     const response = await firstValueFrom(this.http.get<T>(url));
     return response.data;
   }
+
+  async post<T>(
+    url: string,
+    body: unknown,
+    headers: Record<string, string>,
+  ): Promise<T> {
+    const response = await firstValueFrom(
+      this.http.post<T>(url, body, { headers }),
+    );
+    return response.data;
+  }
 }

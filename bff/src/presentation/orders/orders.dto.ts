@@ -8,3 +8,18 @@ export interface IOrderResponse {
   status: OrderStatus;
   assetName: string;
 }
+
+export interface ICreateOrderReponse {
+  accountId: number;
+  id: number;
+  assetId: number;
+  quantity: number;
+  type: OrderType;
+}
+
+export interface ICreateOrderRequest {
+  accountId: number;
+  assetId: number;
+  quantity: number;
+  type: OrderType;
+}

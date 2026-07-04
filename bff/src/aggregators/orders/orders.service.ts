@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CoreHttpService } from '../../common/http/http.service';
-import { IApiOrderResponse } from './orders.dto';
+import {
+  IApiCreateOrderReponse,
+  IApiCreateOrderRequest,
+  IApiGetOrderResponse,
+} from './orders.dto';
 
 @Injectable()
 export class OrdersAggregator {
@@ -10,9 +14,25 @@ export class OrdersAggregator {
 
   public async getOrders() {
     try {
-      return await this.http.get<IApiOrderResponse[]>(`${this.base}/orders`);
+      return await this.http.get<IApiGetOrderResponse[]>(`${this.base}/orders`);
     } catch (error) {
       console.error(error, '[getOrders]');
+      throw error;
+    }
+  }
+
+  public async createOrder(
+    body: IApiCreateOrderRequest,
+    idempotencyKey: string,
+  ) {
+    try {
+      return await this.http.post<IApiCreateOrderReponse>(
+        `${this.base}/orders`,
+        body,
+        { 'Idempotency-Key': idempotencyKey },
+      );
+    } catch (error) {
+      console.error(error, '[createOrder]');
       throw error;
     }
   }
