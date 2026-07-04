@@ -1,5 +1,5 @@
 public enum OrderType
 {
-  Buy,
-  Sell
+    Buy,
+    Sell
 }

@@ -1,7 +1,7 @@
 public enum OrderStatus
 {
-  Pending,
-  Processing,
-  Executed,
-  Failed
+    Pending,
+    Processing,
+    Executed,
+    Failed
 }

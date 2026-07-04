@@ -13,8 +13,14 @@ public class AppDbContext : DbContext
     modelBuilder.Entity<Order>(e =>
     {
       e.ToTable("orders");
-      e.Property(o => o.Type).HasConversion<string>();
-      e.Property(o => o.Status).HasConversion<string>();
+      e.Property(o => o.Type).HasConversion(
+          v => v.ToString().ToLower(),
+          v => Enum.Parse<OrderType>(v, true)
+      );
+      e.Property(o => o.Status).HasConversion(
+        v => v.ToString().ToLower(),
+        v => Enum.Parse<OrderStatus>(v, true)
+      );
     });
 
     modelBuilder.Entity<Account>().ToTable("accounts");

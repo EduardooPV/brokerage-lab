@@ -17,5 +17,6 @@ CREATE TABLE orders (
     quantity INTEGER NOT NULL,
     status     VARCHAR(12) NOT NULL DEFAULT 'pending'
                    CHECK (status IN ('pending', 'processing', 'executed', 'failed')),
-    created_at  TIMESTAMP NOT NULL DEFAULT NOW()
+    created_at  TIMESTAMP NOT NULL DEFAULT NOW(),
+    transaction_id UUID UNIQUE NOT NULL
 );
