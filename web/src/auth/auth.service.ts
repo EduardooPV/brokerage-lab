@@ -1,6 +1,19 @@
 import type { ITokenResponse } from "./auth.types";
 import { generateCodeChallenge, generateCodeVerifier } from "./pkce";
 
+export const logout = () => {
+  const idToken = sessionStorage.getItem("id-token") ?? "";
+  sessionStorage.removeItem("access-token");
+  sessionStorage.removeItem("refresh-token");
+  sessionStorage.removeItem("id-token");
+  const params = new URLSearchParams({
+    client_id: "corretora-web",
+    id_token_hint: idToken,
+    post_logout_redirect_uri: "http://localhost:5173/login",
+  });
+  window.location.href = `http://localhost:8080/realms/corretora/protocol/openid-connect/logout?${params.toString()}`;
+};
+
 export const login = async () => {
   const codeVerifier = generateCodeVerifier();
   const codeChallenge = await generateCodeChallenge(codeVerifier);
@@ -17,6 +30,26 @@ export const login = async () => {
   });
 
   const url = `http://localhost:8080/realms/corretora/protocol/openid-connect/auth?${params.toString()}`;
+
+  window.location.href = url;
+};
+
+export const register = async () => {
+  const codeVerifier = generateCodeVerifier();
+  const codeChallenge = await generateCodeChallenge(codeVerifier);
+
+  sessionStorage.setItem("code-verifier", codeVerifier);
+
+  const params = new URLSearchParams({
+    client_id: "corretora-web",
+    redirect_uri: "http://localhost:5173/callback",
+    response_type: "code",
+    code_challenge: codeChallenge,
+    code_challenge_method: "S256",
+    scope: "openid",
+  });
+
+  const url = `http://localhost:8080/realms/corretora/protocol/openid-connect/registrations?${params.toString()}`;
 
   window.location.href = url;
 };
@@ -59,6 +92,7 @@ export const handleCallback = async () => {
 
     sessionStorage.setItem("access-token", token.access_token);
     sessionStorage.setItem("refresh-token", token.refresh_token);
+    sessionStorage.setItem("id-token", token.id_token);
     sessionStorage.removeItem("code-verifier");
   } catch (error) {
     console.error(error);

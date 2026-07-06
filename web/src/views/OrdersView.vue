@@ -108,21 +108,20 @@ onMounted(fetchOrders);
 .orders-page {
   max-width: 960px;
   margin: 0 auto;
-  padding: 24px;
-  font-family: Arial, sans-serif;
+  padding: 36px 24px;
 }
 
 .title {
-  font-size: 1.9rem;
-  margin-bottom: 18px;
-  color: #1f2937;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #f1f5f9;
 }
 
 .order-form {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: #1e293b;
+  border: 1px solid #334155;
   border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
   padding: 20px;
   margin-bottom: 28px;
 }
@@ -143,73 +142,80 @@ onMounted(fetchOrders);
 }
 
 .form-group label {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 600;
-  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
 }
 
 .form-group input,
 .form-group select {
-  padding: 8px 12px;
-  border: 1px solid #d1d5db;
+  padding: 9px 12px;
+  background: #0f172a;
+  border: 1px solid #334155;
   border-radius: 8px;
-  font-size: 0.95rem;
-  color: #111827;
+  font-size: 0.92rem;
+  color: #f1f5f9;
   outline: none;
   transition: border-color 0.15s;
 }
 
+.form-group select option {
+  background: #1e293b;
+}
+
 .form-group input:focus,
 .form-group select:focus {
-  border-color: #1a73e8;
+  border-color: #3b82f6;
 }
 
 button[type='submit'] {
   padding: 9px 22px;
-  background-color: #1a73e8;
+  background: #3b82f6;
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
+  font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
   align-self: flex-end;
-  transition: background-color 0.15s;
+  transition: background 0.15s;
 }
 
 button[type='submit']:hover:not(:disabled) {
-  background-color: #1557b0;
+  background: #2563eb;
 }
 
 button[type='submit']:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 .form-error {
   margin: 10px 0 0;
-  color: #991b1b;
-  font-size: 0.88rem;
+  color: #f87171;
+  font-size: 0.85rem;
 }
 
 .orders-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 18px;
+  gap: 16px;
 }
 
 .order-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 14px;
   padding: 18px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.15s, border-color 0.15s;
 }
 
 .order-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 18px 30px rgba(15, 23, 42, 0.14);
+  transform: translateY(-2px);
+  border-color: #3b82f6;
 }
 
 .order-card__header {
@@ -221,15 +227,19 @@ button[type='submit']:disabled {
 
 .order-card__id {
   font-weight: 700;
-  color: #111827;
+  color: #94a3b8;
+  font-size: 0.85rem;
 }
 
 .order-card__type {
-  background: #eef2ff;
-  color: #4338ca;
-  padding: 5px 10px;
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  padding: 3px 10px;
   border-radius: 999px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
 .order-card__body {
@@ -240,7 +250,13 @@ button[type='submit']:disabled {
 .order-card__item,
 .order-card__status {
   margin: 0;
-  color: #374151;
+  color: #94a3b8;
+  font-size: 0.88rem;
+}
+
+.order-card__item strong,
+.order-card__status strong {
+  color: #cbd5e1;
 }
 
 .order-card__status {
@@ -253,36 +269,40 @@ button[type='submit']:disabled {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 3px 10px;
+  padding: 2px 10px;
   border-radius: 999px;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 600;
   text-transform: capitalize;
 }
 
 .status-pill.pending {
-  background: #fef3c7;
-  color: #b45309;
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.25);
 }
 
 .status-pill.processing {
-  background: #dbeafe;
-  color: #0c4a6e;
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.25);
 }
 
 .status-pill.executed {
-  background: #dcfce7;
-  color: #166534;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.25);
 }
 
 .status-pill.failed {
-  background: #fee2e2;
-  color: #991b1b;
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.25);
 }
 
 .empty-message {
-  color: #6b7280;
-  font-size: 1rem;
+  color: #475569;
+  font-size: 0.95rem;
   margin-top: 16px;
 }
 </style>
