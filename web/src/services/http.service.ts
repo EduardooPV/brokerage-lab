@@ -39,4 +39,14 @@ export class HttpService {
 
     return response.data;
   }
+
+  public async post<T>(
+    url: string,
+    body?: unknown,
+    headers?: Record<string, string>,
+  ): Promise<T> {
+    const response = await this.instance.post<T>(url, body, { headers });
+
+    return response.data;
+  }
 }
