@@ -1,4 +1,4 @@
-<img width="546" height="559" alt="image" src="https://github.com/user-attachments/assets/4496a3e1-b907-4fe5-8d42-0ee65db4e738" /># Corretora Lab 💲
+# Corretora Lab 💲
 
 Laboratório de aprendizado fullstack com domínio de corretora simplificado: Conta, Ativo e Ordem. Cada fase adiciona uma camada de complexidade real (auth, transações, filas, cache, observabilidade) sobre o mesmo domínio.
 
