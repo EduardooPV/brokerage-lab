@@ -62,7 +62,7 @@ A stack cobre o ciclo completo de uma aplicação financeira de produção: fron
 
 ---
 
-### Fase 3 — Processamento Assíncrono
+### Fase 3 — Processamento Assíncrono (RabbitMQ) 🚧 em andamento
 **Goal:** Desacoplar processamento da resposta HTTP.
 
 - `POST /orders` retorna `202 Pending` imediatamente
@@ -72,7 +72,7 @@ A stack cobre o ciclo completo de uma aplicação financeira de produção: fron
 
 ---
 
-### Fase 4 — Cache e Performance
+### Fase 4 — Cache e Performance (Redis) ⬜ planejado
 **Goal:** Reduzir latência em leituras de preço.
 
 - `GET /assets/price` consulta Redis antes do banco
@@ -81,7 +81,7 @@ A stack cobre o ciclo completo de uma aplicação financeira de produção: fron
 
 ---
 
-### Fase 5 — Observabilidade e Logging
+### Fase 5 — Observabilidade e Logging ⬜ planejado
 **Goal:** Investigação rápida de incidentes.
 
 - `correlationId` gerado na borda e propagado via `AsyncLocalStorage`
