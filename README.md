@@ -1,30 +1,64 @@
-# Corretora Lab 💲
+<h1 align="center">Brokerage Lab 💲</h1>
+
+<p align="center">
+  Laboratório fullstack com domínio de corretora (Conta, Ativo, Ordem) que evolui em infraestrutura por fases: auth, transações ACID, filas, cache e observabilidade.
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Vue-3-4FC08D?style=flat-square&logo=vuedotjs&logoColor=white" alt="Vue 3" />
+  <img src="https://img.shields.io/badge/NestJS-BFF-E0234E?style=flat-square&logo=nestjs&logoColor=white" alt="NestJS" />
+  <img src="https://img.shields.io/badge/.NET-8-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt=".NET 8" />
+  <img src="https://img.shields.io/badge/PostgreSQL-db-4169E1?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/Redis-cache-DC382D?style=flat-square&logo=redis&logoColor=white" alt="Redis" />
+  <img src="https://img.shields.io/badge/RabbitMQ-queues-FF6600?style=flat-square&logo=rabbitmq&logoColor=white" alt="RabbitMQ" />
+  <img src="https://img.shields.io/badge/Keycloak-OIDC-008AAA?style=flat-square&logo=keycloak&logoColor=white" alt="Keycloak" />
+  <img src="https://img.shields.io/badge/Docker-compose-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker Compose" />
+</p>
+
+<p align="center">
+  <a href="#sobre-o-projeto">Sobre o projeto</a> ·
+  <a href="#arquitetura">Arquitetura</a> ·
+  <a href="#stack">Stack</a> ·
+  <a href="#fases">Fases</a> ·
+  <a href="#como-rodar">Como rodar</a> ·
+  <a href="#objetivo-de-aprendizado">Objetivo de aprendizado</a>
+</p>
+
+---
+
+## Sobre o projeto
 
 Laboratório de aprendizado fullstack com domínio de corretora simplificado: Conta, Ativo e Ordem. Cada fase adiciona uma camada de complexidade real (auth, transações, filas, cache, observabilidade) sobre o mesmo domínio.
 
 A stack cobre o ciclo completo de uma aplicação financeira de produção: frontend SPA, BFF com camadas bem definidas, backend REST, banco relacional, cache, mensageria e observabilidade. Tudo roda localmente via docker-compose, sem dependência de cloud.
 
-# Arquitetura 
+---
+
+## Arquitetura
 
 <img width="1408" height="768" alt="arquitetura-do-projeto" src="https://github.com/user-attachments/assets/b8b945a9-8d35-4cc4-bda2-bdd965cfaac2" />
 
+---
+
 ## Stack
 
-| Camada         | Tecnologia                      |
-|----------------|---------------------------------|
-| Web            | Vue 3 + Vite + TypeScript       |
-| BFF            | NestJS (presentation → aggregator) |
-| Backend        | .NET 8                          |
-| Banco de dados | PostgreSQL                      |
-| Cache          | Redis                           |
-| Mensageria     | RabbitMQ                        |
-| Auth           | Keycloak (OIDC/PKCE)            |
-| Observabilidade | Grafana, Prometheus, Loki      |
-| Infraestrutura | Docker Compose (local)          |
+| Camada          | Tecnologia                         |
+|-----------------|------------------------------------|
+| Web             | Vue 3 + Vite + TypeScript          |
+| BFF             | NestJS (presentation → aggregator) |
+| Backend         | .NET 8                             |
+| Banco de dados  | PostgreSQL                         |
+| Cache           | Redis                              |
+| Mensageria      | RabbitMQ                           |
+| Auth            | Keycloak (OIDC/PKCE)               |
+| Observabilidade | Grafana, Prometheus, Loki          |
+| Infraestrutura  | Docker Compose (local)             |
 
 ---
 
 ## Fases
+
+Status de cada fase: ✅ concluída · 🚧 em andamento · ⬜ planejada
 
 ### Fase 0 — Walking Skeleton (N+1) ✅
 **Goal:** Conexão end-to-end funcional.
@@ -48,7 +82,6 @@ A stack cobre o ciclo completo de uma aplicação financeira de produção: fron
 
 <img width="400" alt="image" src="https://github.com/user-attachments/assets/39671a06-b110-4961-bd5e-44b6b05dddfc" />
 <img width="400" alt="image" src="https://github.com/user-attachments/assets/1286a916-7316-4e3d-88fe-28359b312915" />
-
 
 ---
 
@@ -112,3 +145,11 @@ Cada fase existe para expor um problema de infraestrutura real antes de resolvê
 3. Corrigir com entendimento do trade-off
 
 O critério de conclusão de cada fase é conseguir explicar verbalmente o trade-off da decisão tomada — não apenas ter o código funcionando.
+
+---
+
+<p align="center">
+  Desenvolvido por <strong>Luiz Eduardo Veltroni</strong> ·
+  <a href="https://github.com/EduardooPV">GitHub</a> ·
+  <a href="https://www.linkedin.com/in/luiz-veltroni/">LinkedIn</a>
+</p>
