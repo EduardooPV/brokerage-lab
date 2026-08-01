@@ -129,8 +129,15 @@ Status de cada fase: ✅ concluída · 🚧 em andamento · ⬜ planejada
 ```bash
 # Pré-requisito: Docker e Docker Compose instalados
 
-docker-compose up -d
+cp bff/.env.example bff/.env
+
+make infra        # sobe Postgres e Keycloak
+make dev          # sobe a infra e roda API (.NET), BFF (NestJS) e Web (Vue)
+make stop         # para os processos e os containers
+make infra-reset  # recria a infra do zero (apaga os volumes)
 ```
+
+Sem o Makefile, a infraestrutura sobe com `docker compose up -d`.
 
 Cada fase tem sua própria branch e pode ser executada de forma isolada.
 
