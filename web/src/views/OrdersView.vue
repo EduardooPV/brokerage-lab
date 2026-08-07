@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, onUnmounted, reactive, ref } from 'vue';
 import { createOrder, getOrders } from '../services/orders.service';
 import { generateIdempotencyKey } from '../utils/uuid';
 import type { IGetOrdersResponse } from '../types/order';
@@ -67,6 +67,8 @@ const form = reactive({
   quantity: 1,
   type: 'buy',
 });
+
+let pollingInterval: ReturnType<typeof setInterval>;
 
 const fetchOrders = async () => {
   try {
@@ -101,7 +103,24 @@ const handleCreate = async () => {
   }
 };
 
-onMounted(fetchOrders);
+onMounted(() => {
+  fetchOrders()
+  pollingInterval = setInterval(async () => {
+    await fetchOrders()
+
+    const hasActiveOrders = orders.value.some(
+      order => order.status.toLowerCase() === 'pending' || order.status.toLowerCase() === 'processing'
+    )
+
+    if (!hasActiveOrders) {
+      clearInterval(pollingInterval)
+    }
+  }, 3000);
+});
+
+onUnmounted(() => {
+  clearInterval(pollingInterval);
+})
 </script>
 
 <style scoped>

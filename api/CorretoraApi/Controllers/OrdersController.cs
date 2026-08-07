@@ -7,10 +7,12 @@ using Microsoft.EntityFrameworkCore;
 public class OrdersController : ControllerBase
 {
   private readonly AppDbContext _context;
+  private readonly OrderPublisher _publisher;
 
-  public OrdersController(AppDbContext context)
+  public OrdersController(AppDbContext context, OrderPublisher publisher)
   {
     _context = context;
+    _publisher = publisher;
   }
 
   /// <summary>
@@ -96,7 +98,9 @@ public class OrdersController : ControllerBase
 
     await transaction.CommitAsync();
 
-    return CreatedAtAction(nameof(GetOrders), new { id = newOrder.Id }, new CreateOrderResponse
+    await _publisher.PublishAsync(newOrder.Id);
+
+    return Accepted(new CreateOrderResponse
     {
       Id = newOrder.Id,
       AccountId = newOrder.AccountId,

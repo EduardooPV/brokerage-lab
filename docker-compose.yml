@@ -22,6 +22,12 @@ services:
     volumes:
       - keycloak_data:/opt/keycloak/data
     command: ["start-dev"]
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
 
 volumes:
   postgres_data:
