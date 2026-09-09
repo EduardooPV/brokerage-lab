@@ -35,8 +35,8 @@ A stack cobre o ciclo completo de uma aplicação financeira de produção: fron
 ---
 
 ## Arquitetura
+<img width="1698" height="926" alt="image" src="https://github.com/user-attachments/assets/0dae592e-786e-4010-b4c3-1b804553cc7c" />
 
-<img width="1408" height="768" alt="arquitetura-do-projeto" src="https://github.com/user-attachments/assets/b8b945a9-8d35-4cc4-bda2-bdd965cfaac2" />
 
 ---
 
