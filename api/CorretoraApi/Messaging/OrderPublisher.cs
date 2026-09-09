@@ -20,7 +20,12 @@ public class OrderPublisher
       queue: QueueName,
       durable: true,
       exclusive: false,
-      autoDelete: false
+      autoDelete: false,
+      arguments: new Dictionary<string, object?>
+      {
+        { "x-dead-letter-exchange", ""},
+        { "x-dead-letter-routing-key", "order.process.dlq" }
+      }
     );
 
     var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new { orderId }));

@@ -26,6 +26,19 @@ public class OrderWorker : BackgroundService
       durable: true,
       exclusive: false,
       autoDelete: false,
+      arguments: new Dictionary<string, object?>
+      {
+        { "x-dead-letter-exchange", ""},
+        { "x-dead-letter-routing-key", "order.process.dlq"}
+      },
+      cancellationToken: stoppingToken
+    );
+
+    await channel.QueueDeclareAsync(
+      queue: "order.process.dlq",
+      durable: true,
+      exclusive: false,
+      autoDelete: false,
       cancellationToken: stoppingToken
     );
 
@@ -57,16 +70,29 @@ public class OrderWorker : BackgroundService
         return;
       }
 
-      order.Status = OrderStatus.Processing;
-      await db.SaveChangesAsync();
+      try
+      {
 
-      // Processing simulation
-      await Task.Delay(3000, stoppingToken);
+        order.Status = OrderStatus.Processing;
+        await db.SaveChangesAsync();
 
-      order.Status = OrderStatus.Executed;
-      await db.SaveChangesAsync();
+        // Processing simulation
+        await Task.Delay(3000, stoppingToken);
 
-      await channel.BasicAckAsync(ea.DeliveryTag, multiple: false);
+        order.Status = OrderStatus.Executed;
+        await db.SaveChangesAsync();
+
+        await channel.BasicAckAsync(ea.DeliveryTag, multiple: false);
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine($"[OrderWorker] Falha ao processar ordem {message.OrderId}: {ex.Message}");
+
+        order.Status = OrderStatus.Failed;
+        await db.SaveChangesAsync();
+
+        await channel.BasicNackAsync(ea.DeliveryTag, multiple: false, requeue: false);
+      }
     };
 
     await channel.BasicConsumeAsync(
