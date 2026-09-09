@@ -95,7 +95,7 @@ Status de cada fase: ✅ concluída · 🚧 em andamento · ⬜ planejada
 
 ---
 
-### Fase 3 — Processamento Assíncrono (RabbitMQ) 🚧 em andamento
+### Fase 3 — Processamento Assíncrono (RabbitMQ) ✅
 **Goal:** Desacoplar processamento da resposta HTTP.
 
 - `POST /orders` retorna `202 Pending` imediatamente
@@ -103,9 +103,11 @@ Status de cada fase: ✅ concluída · 🚧 em andamento · ⬜ planejada
 - Worker processa, publica evento no exchange
 - Web faz polling para checar status
 
+<img width="920" height="285" alt="image" src="https://github.com/user-attachments/assets/7d805350-82f7-4c80-a3e3-94cb875930f5" />
+
 ---
 
-### Fase 4 — Cache e Performance (Redis) ⬜ planejado
+### Fase 4 — Cache e Performance (Redis) 🚧 em andamento
 **Goal:** Reduzir latência em leituras de preço.
 
 - `GET /assets/price` consulta Redis antes do banco
