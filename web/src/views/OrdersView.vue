@@ -31,7 +31,12 @@
     </form>
 
     <div v-if="orders.length > 0" class="orders-grid">
-      <article v-for="order in orders" :key="order.id" class="order-card">
+      <article
+        v-for="order in orders"
+        :key="order.id"
+        class="order-card"
+        @click="openModal(order)"
+      >
         <div class="order-card__header">
           <span class="order-card__id">#{{ order.id }}</span>
           <span class="order-card__type">{{ order.type }}</span>
@@ -48,18 +53,64 @@
     </div>
 
     <p v-else class="empty-message">Não há ordens para exibir.</p>
+
+    <!-- Modal -->
+    <Teleport to="body">
+      <div v-if="selectedOrder" class="modal-backdrop" @click.self="closeModal">
+        <div class="modal">
+          <div class="modal__header">
+            <span class="modal__title">Ordem #{{ selectedOrder.id }}</span>
+            <button class="modal__close" @click="closeModal">✕</button>
+          </div>
+          <div class="modal__body">
+            <div class="modal__row">
+              <span class="modal__label">Ativo</span>
+              <span class="modal__value">{{ selectedOrder.assetName }}</span>
+            </div>
+            <div class="modal__row">
+              <span class="modal__label">Tipo</span>
+              <span class="modal__value" style="text-transform: capitalize">{{ selectedOrder.type }}</span>
+            </div>
+            <div class="modal__row">
+              <span class="modal__label">Quantidade</span>
+              <span class="modal__value">{{ selectedOrder.quantity }}</span>
+            </div>
+            <div class="modal__row">
+              <span class="modal__label">Status</span>
+              <span :class="['status-pill', selectedOrder.status.toLowerCase()]">{{ selectedOrder.status }}</span>
+            </div>
+            <div class="modal__row">
+              <span class="modal__label">Preço atual</span>
+              <span class="modal__value">
+                <template v-if="loadingPrice">Carregando...</template>
+                <template v-else-if="assetPrice !== null">
+                  R$ {{ assetPrice.price.toFixed(2) }}
+                  <span class="modal__source" :class="assetPrice.source">{{ assetPrice.source }}</span>
+                </template>
+                <template v-else>—</template>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </section>
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive, ref } from 'vue';
 import { createOrder, getOrders } from '../services/orders.service';
+import { getAssetPrice } from '../services/assets.service';
 import { generateIdempotencyKey } from '../utils/uuid';
 import type { IGetOrdersResponse } from '../types/order';
+import type { IGetAssetPriceResponse } from '../types/asset';
 
 const orders = ref<IGetOrdersResponse[]>([]);
 const submitting = ref(false);
 const error = ref<string | null>(null);
+const selectedOrder = ref<IGetOrdersResponse | null>(null);
+const assetPrice = ref<IGetAssetPriceResponse | null>(null);
+const loadingPrice = ref(false);
 
 const form = reactive({
   accountId: 1,
@@ -77,6 +128,24 @@ const fetchOrders = async () => {
   } catch (e) {
     console.error(e);
   }
+};
+
+const openModal = async (order: IGetOrdersResponse) => {
+  selectedOrder.value = order;
+  assetPrice.value = null;
+  loadingPrice.value = true;
+  try {
+    assetPrice.value = await getAssetPrice(order.assetId);
+  } catch (e) {
+    console.error(e);
+  } finally {
+    loadingPrice.value = false;
+  }
+};
+
+const closeModal = () => {
+  selectedOrder.value = null;
+  assetPrice.value = null;
 };
 
 const handleCreate = async () => {
@@ -104,23 +173,21 @@ const handleCreate = async () => {
 };
 
 onMounted(() => {
-  fetchOrders()
+  fetchOrders();
   pollingInterval = setInterval(async () => {
-    await fetchOrders()
-
+    await fetchOrders();
     const hasActiveOrders = orders.value.some(
       order => order.status.toLowerCase() === 'pending' || order.status.toLowerCase() === 'processing'
-    )
-
+    );
     if (!hasActiveOrders) {
-      clearInterval(pollingInterval)
+      clearInterval(pollingInterval);
     }
   }, 3000);
 });
 
 onUnmounted(() => {
   clearInterval(pollingInterval);
-})
+});
 </script>
 
 <style scoped>
@@ -229,6 +296,7 @@ button[type='submit']:disabled {
   border: 1px solid #334155;
   border-radius: 14px;
   padding: 18px;
+  cursor: pointer;
   transition: transform 0.15s, border-color 0.15s;
 }
 
@@ -323,5 +391,103 @@ button[type='submit']:disabled {
   color: #475569;
   font-size: 0.95rem;
   margin-top: 16px;
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+
+.modal {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  border-bottom: 1px solid #334155;
+}
+
+.modal__title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #f1f5f9;
+}
+
+.modal__close {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.modal__close:hover {
+  color: #f1f5f9;
+}
+
+.modal__body {
+  padding: 20px;
+  display: grid;
+  gap: 14px;
+}
+
+.modal__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal__label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+.modal__value {
+  font-size: 0.92rem;
+  color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal__source {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.modal__source.cache {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.modal__source.database {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.25);
 }
 </style>

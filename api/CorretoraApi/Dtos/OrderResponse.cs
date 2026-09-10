@@ -14,4 +14,7 @@ public class OrderResponse
 
     /// <summary>Nome do ativo (ticker).</summary>
     public required string AssetName { get; set; }
+
+    /// <summary>ID do ativo.</summary>
+    public int AssetId { get; set; }
 }

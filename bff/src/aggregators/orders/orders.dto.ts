@@ -7,6 +7,7 @@ export interface IApiGetOrderResponse {
   type: OrderType;
   status: OrderStatus;
   assetName: string;
+  assetId: number;
 }
 
 export interface IApiCreateOrderRequest {
