@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RabbitMQ.Client;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,9 @@ builder.Services.AddSingleton<IConnection>(_ =>
 });
 builder.Services.AddScoped<OrderPublisher>();
 builder.Services.AddHostedService<OrderWorker>();
+builder.Services.AddSingleton<IConnectionMultiplexer>(
+  ConnectionMultiplexer.Connect("localhost:6379")
+);
 
 var app = builder.Build();
 

@@ -7,6 +7,7 @@ export interface IOrderResponse {
   type: OrderType;
   status: OrderStatus;
   assetName: string;
+  assetId: number;
 }
 
 export interface ICreateOrderReponse {

@@ -133,7 +133,7 @@ Status de cada fase: ✅ concluída · 🚧 em andamento · ⬜ planejada
 
 cp bff/.env.example bff/.env
 
-make infra        # sobe Postgres e Keycloak
+make infra        # sobe Postgres, Keycloak, RabbitMQ e Redis
 make dev          # sobe a infra e roda API (.NET), BFF (NestJS) e Web (Vue)
 make stop         # para os processos e os containers
 make infra-reset  # recria a infra do zero (apaga os volumes)
@@ -142,6 +142,23 @@ make infra-reset  # recria a infra do zero (apaga os volumes)
 Sem o Makefile, a infraestrutura sobe com `docker compose up -d`.
 
 Cada fase tem sua própria branch e pode ser executada de forma isolada.
+
+---
+
+## Links e credenciais locais
+
+| Serviço              | URL                                       | Usuário | Senha |
+|----------------------|-------------------------------------------|---------|-------|
+| Web (Vue)            | http://localhost:5173                     | —       | —     |
+| BFF (NestJS)         | http://localhost:3000                     | —       | —     |
+| API (.NET / Swagger) | http://localhost:5089/swagger             | —       | —     |
+| Keycloak (admin)     | http://localhost:8080/admin               | admin   | admin |
+| RabbitMQ Management  | http://localhost:15672                    | guest   | guest |
+| Redis Insight        | http://localhost:8001                     | —       | —     |
+
+> **Keycloak:** o realm `corretora` e o client `corretora-web` são criados manualmente na primeira execução. Credenciais de usuário de teste criadas pelo próprio Keycloak via registro na tela de login.
+>
+> **Redis Insight:** ao abrir pela primeira vez, adicione uma conexão com hostname `redis` e porta `6379` (use o nome do serviço Docker, não `localhost`).
 
 ---
 

@@ -32,7 +32,8 @@ public class OrdersController : ControllerBase
       Quantity = o.Quantity,
       Type = o.Type.ToString(),
       Status = o.Status.ToString(),
-      AssetName = o.Asset.Name
+      AssetName = o.Asset.Name,
+      AssetId = o.AssetId
     }).ToList();
 
     return Ok(result);

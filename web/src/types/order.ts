@@ -7,6 +7,7 @@ export interface IGetOrdersResponse {
   type: OrderType;
   status: OrderStatus;
   assetName: string;
+  assetId: number;
 }
 
 export interface ICreateOrderRequest {
