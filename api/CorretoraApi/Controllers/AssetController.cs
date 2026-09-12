@@ -37,4 +37,22 @@ public class AssetsController : ControllerBase
 
     return Ok(new { price = asset.Price, source = "database" });
   }
+
+  [HttpPut("{id}/price")]
+  public async Task<IActionResult> UpdatePrice(int id, [FromBody] UpdateAssetPriceRequest request)
+  {
+    var asset = await _context.Assets.FindAsync(id);
+
+    if (asset is null)
+    {
+      return NotFound();
+    }
+
+    asset.Price = request.Price;
+    await _context.SaveChangesAsync();
+
+    await _redis.KeyDeleteAsync($"asset:{id}:price");
+
+    return Ok(new { id, price = asset.Price });
+  }
 }
