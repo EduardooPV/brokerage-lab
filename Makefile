@@ -11,6 +11,7 @@ dev: infra
 	pkill -f "dotne[t] watch" || true
 	pkill -f "CorretoraAp[i]" || true
 	pkill -f "npm[ ]run[ ]start:dev" || true
+	fuser -k 5089/tcp || true
 	sleep 5
 	cd api/CorretoraApi && dotnet watch run &
 	cd bff && npm run start:dev &
@@ -21,4 +22,5 @@ stop:
 	pkill -f "CorretoraAp[i]" || true
 	pkill -f "npm[ ]run[ ]start:dev" || true
 	pkill -f "npm[ ]run[ ]dev" || true
+	fuser -k 5089/tcp || true
 	docker compose stop

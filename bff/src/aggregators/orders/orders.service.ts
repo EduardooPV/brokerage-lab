@@ -5,10 +5,14 @@ import {
   IApiCreateOrderRequest,
   IApiGetOrderResponse,
 } from './orders.dto';
+import { Logger } from 'nestjs-pino';
 
 @Injectable()
 export class OrdersAggregator {
-  constructor(private readonly http: CoreHttpService) {}
+  constructor(
+    private readonly http: CoreHttpService,
+    private readonly logger: Logger,
+  ) {}
 
   private base = process.env.CORRETORA_API_URL ?? 'http://localhost:5089';
 
@@ -16,7 +20,8 @@ export class OrdersAggregator {
     try {
       return await this.http.get<IApiGetOrderResponse[]>(`${this.base}/orders`);
     } catch (error) {
-      console.error(error, '[getOrders]');
+      const err = error instanceof Error ? error : new Error(String(error));
+      this.logger.error({ err }, '[getOrders]');
       throw error;
     }
   }
@@ -32,7 +37,8 @@ export class OrdersAggregator {
         { 'Idempotency-Key': idempotencyKey },
       );
     } catch (error) {
-      console.error(error, '[createOrder]');
+      const err = error instanceof Error ? error : new Error(String(error));
+      this.logger.error({ err }, '[createOrder]');
       throw error;
     }
   }
