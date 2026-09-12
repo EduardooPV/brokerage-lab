@@ -107,16 +107,18 @@ Status de cada fase: ✅ concluída · 🚧 em andamento · ⬜ planejada
 
 ---
 
-### Fase 4 — Cache e Performance (Redis) 🚧 em andamento
+### Fase 4 — Cache e Performance (Redis) ✅
 **Goal:** Reduzir latência em leituras de preço.
 
 - `GET /assets/price` consulta Redis antes do banco
 - Cache HIT retorna direto; MISS busca no banco e escreve no Redis com TTL
 - Invalidação ativa na mudança de preço
 
+<img width="1343" height="471" alt="image" src="https://github.com/user-attachments/assets/373e0d8f-ca7b-4bf0-a5c1-c6a1e090fc33" />
+
 ---
 
-### Fase 5 — Observabilidade e Logging ⬜ planejado
+### Fase 5 — Observabilidade e Logging 🚧 em andamento
 **Goal:** Investigação rápida de incidentes.
 
 - `correlationId` gerado na borda e propagado via `AsyncLocalStorage`
